@@ -1,6 +1,6 @@
 {
   "name": "html-substring",
-  "author": "Tarik02",
+  "author": "tarik02",
   "license": "MIT",
   "version": "1.0.0",
   "description": "Module making safe substring of HTML source",
