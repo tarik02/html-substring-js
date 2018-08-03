@@ -15,8 +15,9 @@ function html_substring(source: string, length: number): string
 ```
 
 # Examples
-## JS/TS
 ```ts
+// JavaScript/TypeScript
+
 import html_substring from 'html-substring'
 // const html_substring = require('html-substring')
 
@@ -24,4 +25,4 @@ console.log(html_substring('<span><div>Hello</div> <p>World</p></span>', 6))
 // <span><div>Hello</div> </span>
 ```
 
-You can look tests for more examples:
+You can look [tests](https://github.com/Tarik02/html-substring-js/blob/master/test/test.ts) for more examples
