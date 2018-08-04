@@ -5,13 +5,22 @@ Module making safe substring of HTML source
 
 # Doc
 ```ts
+interface Options {
+  breakWords: boolean
+}
+
 /**
  * @param source Source HTML
  * @param length Visible characters (everything but HTML tags) limit
+ * @param options Options object
  *
  * @returns stripped source by length characters
  */
-function html_substring(source: string, length: number): string
+function html_substring(
+  source: string,
+  length: number,
+  options?: Partial<Options>,
+): string
 ```
 
 # Examples
@@ -19,7 +28,6 @@ function html_substring(source: string, length: number): string
 // JavaScript/TypeScript
 
 import html_substring from 'html-substring'
-// const html_substring = require('html-substring')
 
 console.log(html_substring('<span><div>Hello</div> <p>World</p></span>', 6))
 // <span><div>Hello</div> </span>

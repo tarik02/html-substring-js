@@ -78,4 +78,22 @@ describe('html_substring', () => {
       }).to.throw('Expected matching \';\' to \'&\' at offset 3')
     })
   })
+
+  describe('word breaking', () => {
+    it('should assume that whitespace is a prefix of word', () => {
+      const result = html_substring('<div><span>Hello</span><span> World</span></div>', 7, {
+        breakWords: false,
+      })
+
+      expect(result).to.eq('<div><span>Hello</span></div>')
+    })
+
+    it('should not break words with tags', () => {
+      const result = html_substring('<div><span>Hello</span> <span>World</span></div>', 7, {
+        breakWords: false,
+      })
+
+      expect(result).to.eq('<div><span>Hello</span> </div>')
+    })
+  })
 })
