@@ -4,10 +4,12 @@ class HtmlSubstringError extends Error {}
 
 interface Options {
   breakWords: boolean
+  suffix: (() => string) | string | null
 }
 
 const DEFAULT_OPTIONS: Options = {
   breakWords: true,
+  suffix: null,
 }
 
 const isLetter = (input: string) => {
@@ -116,7 +118,7 @@ export default function html_substring(
 
         result += cw.slice(0, addable).join('')
         current += addable
-        cw.length = 0
+        cw.splice(0, addable)
 
         return true
       }
@@ -228,12 +230,23 @@ export default function html_substring(
     }
   }
 
-  flushWord()
+  const flushed = flushWord()
 
   for (const tag of opened) {
     result += '</'
     result += tag
     result += '>'
+  }
+
+  if (!flushed) {
+    let suffix = opts.suffix
+    if (suffix !== null) {
+      if (typeof suffix === 'function') {
+        suffix = suffix()
+      }
+
+      result += suffix
+    }
   }
 
   return result

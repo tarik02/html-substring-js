@@ -96,4 +96,55 @@ describe('html_substring', () => {
       expect(result).to.eq('<div><span>Hello</span> </div>')
     })
   })
+
+  describe('suffix', () => {
+    it('should not add suffix when text fits limit', () => {
+      const result = html_substring('<p>Hello, my friend</p>', 16, {
+        suffix: '...',
+      })
+
+      expect(result).to.eq('<p>Hello, my friend</p>')
+    })
+
+    it('should add suffix', () => {
+      const result = html_substring('<p>Hello, my friend</p>', 15, {
+        suffix: '...',
+      })
+
+      expect(result).to.eq('<p>Hello, my frien</p>...')
+    })
+
+    it('should add suffix if word is broken', () => {
+      const result = html_substring('<div><span>Hello</span> <span>World</span></div>', 7, {
+        suffix: '...',
+      })
+
+      expect(result).to.eq('<div><span>Hello</span> <span>W</span></div>...')
+    })
+
+    it('should add suffix when word breaking is off', () => {
+      const result = html_substring('<div><span>Hello</span> <span>World</span></div>', 7, {
+        breakWords: false,
+        suffix: '...',
+      })
+
+      expect(result).to.eq('<div><span>Hello</span> </div>...')
+    })
+
+    it('should not add suffix to empty input', () => {
+      const result = html_substring('', 5, {
+        suffix: '...',
+      })
+
+      expect(result).to.eq('')
+    })
+
+    it('should use suffix as callable', () => {
+      const result = html_substring('<p>Hello, my friend</p>', 15, {
+        suffix: () => '...',
+      })
+
+      expect(result).to.eq('<p>Hello, my frien</p>...')
+    })
+  })
 })

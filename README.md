@@ -6,7 +6,8 @@ Module making safe substring of HTML source
 # Doc
 ```ts
 interface Options {
-  breakWords: boolean
+  breakWords: boolean // defaults to true
+  suffix: (() => string) | string | null // defaults to null
 }
 
 /**
