@@ -103,6 +103,7 @@ export default function html_substring(
   }
 
   const cw: string[] = [] // current word
+  let cwEmpty = true
   const flushWord = opts.breakWords
     ? () => {
         if (cw.length === 0) {
@@ -123,6 +124,10 @@ export default function html_substring(
         return true
       }
     : () => {
+        if (cw.length === 0) {
+          return true
+        }
+
         if (current + cw.length <= length) {
           openTags()
 
@@ -221,10 +226,15 @@ export default function html_substring(
         break
 
       default:
-        if (!isLetter(c) && !isWhitespace(c)) {
+        if (!isLetter(c) && !cwEmpty) {
+          cwEmpty = true
           if (!flushWord()) {
             break mainloop
           }
+        }
+
+        if (!isWhitespace(c)) {
+          cwEmpty = false
         }
         cw.push(c)
     }
@@ -232,6 +242,7 @@ export default function html_substring(
 
   const flushed = flushWord()
 
+  opened.reverse()
   for (const tag of opened) {
     result += '</'
     result += tag

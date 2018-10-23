@@ -147,4 +147,15 @@ describe('html_substring', () => {
       expect(result).to.eq('<p>Hello, my frien</p>...')
     })
   })
+
+  describe('combined', () => {
+    it('should work right with big text', () => {
+      const result = html_substring(
+        'Therefore television ring stone invented discovery known third quiet. Ever source exciting science tears breathe continent rear. Diameter faster goes somewhere met tie. Silk never army younger shop guess corn log. Eye mirror diameter dust field lovely regular speech. Tax stage out easy origin ancient frame. Hidden food happen certainly somehow avoid second plenty sometime select rock far. Newspaper signal clear aid happy held. Sound eager hurry shoe push tongue army strength offer studied huge lamp. Independent rhythm in were cross visit thick stop man bicycle exact rapidly. Seven move mighty bark addition pitch lake. Term against cloud onto worse hurry principle topic felt press see.',
+        40,
+        { breakWords: false, suffix: '...' }
+      )
+      expect(result).to.eq('Therefore television ring stone invented...')
+    })
+  })
 })
