@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Tarik02/html-substring.git"
+    "url": "git+https://github.com/Tarik02/html-substring-js.git"
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",
