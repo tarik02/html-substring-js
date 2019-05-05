@@ -171,6 +171,9 @@ export default function html_substring(
             break
           }
           case '/': {
+            // We should flush opened tags queue since we are going to close a tag just now
+            openTags()
+
             const offset = i - 1
             ++i
             const tag = closeTag()

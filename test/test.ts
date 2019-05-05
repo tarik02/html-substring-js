@@ -164,4 +164,24 @@ describe('html_substring', () => {
       expect(result).to.eq('Therefore television ring stone invented...')
     })
   })
+
+  describe('tags without content', () => {
+    it('should work with no content in the tag', () => {
+      const result = html_substring('hi <strong></strong> John Doe', 100)
+
+      expect(result).to.eq('hi <strong></strong> John Doe')
+    })
+
+    it('should work with html only content in the tag', () => {
+      const result = html_substring('hi <strong><br></strong> John Doe', 100)
+
+      expect(result).to.eq('hi <strong><br></strong> John Doe')
+    })
+
+    it('should strip empty tags at the end', () => {
+      const result = html_substring('I am okay <strong><br></strong>', 10)
+
+      expect(result).to.eq('I am okay ')
+    })
+  })
 })
