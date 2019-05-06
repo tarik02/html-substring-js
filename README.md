@@ -1,5 +1,6 @@
 # html-substring
 [![Build Status](https://travis-ci.org/Tarik02/html-substring-js.svg?branch=master)](https://travis-ci.org/Tarik02/html-substring-js)
+[![npm version](https://badge.fury.io/js/html-substring.svg)](https://badge.fury.io/js/html-substring)
 
 Module making safe substring of HTML source
 
