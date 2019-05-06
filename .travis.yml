@@ -1,11 +1,11 @@
 language: node_js
 node_js:
- - "stable"
+  - stable
 
 install:
- - "yarn install"
+  - yarn install
 
 script:
- - "yarn lint"
- - "yarn build"
- - "yarn test"
+  - yarn lint
+  - yarn build
+  - yarn test
