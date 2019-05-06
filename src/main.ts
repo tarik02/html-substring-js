@@ -1,3 +1,13 @@
+import htmlTags from 'html-tags'
+import voidHtmlTags from 'html-tags/void'
+
+/**
+ * List of tags having optional closing tag
+ */
+const optionalVoidHtmlTags = [
+  'li',
+]
+
 const { min, max } = Math
 
 class HtmlSubstringError extends Error {}
@@ -19,6 +29,9 @@ const isLetter = (input: string) => {
 const isWhitespace = (input: string) => {
   return ' \t\r\n'.includes(input)
 }
+
+const shouldHaveClosingTag = (tag: string) =>
+  voidHtmlTags.indexOf(tag) === -1 && optionalVoidHtmlTags.indexOf(tag) === -1
 
 /**
  * @param source Source HTML
@@ -87,7 +100,7 @@ export default function html_substring(
 
   let c: string // current character
   const openedQueue: Array<[string, string]> = [] // nonflushed open tags
-  const opened: string[] = [] // opened tags stack
+  const closeQueue: string[] = [] // list of tags to be closed
   let result: string = ''
 
   const openTags = () => {
@@ -97,7 +110,9 @@ export default function html_substring(
       result += other
       result += '>'
 
-      opened.push(tag)
+      if (shouldHaveClosingTag(tag)) {
+        closeQueue.push(`</${tag}>`)
+      }
     }
     openedQueue.length = 0
   }
@@ -179,17 +194,20 @@ export default function html_substring(
             const tag = closeTag()
             let success = false
 
-            while (opened.length !== 0) {
-              success = opened.pop() === tag
-              if (success) {
-                break
+            // if the tag doesn't need to be closed, then just print it
+            if (shouldHaveClosingTag(tag)) {
+              while (closeQueue.length !== 0) {
+                success = closeQueue.pop() === (`</${tag}>`)
+                if (success) {
+                  break
+                }
               }
-            }
 
-            if (!success) {
-              throw new HtmlSubstringError(
-                `Unexpected closing tag '${tag}' on offset ${offset}`,
-              )
+              if (!success) {
+                throw new HtmlSubstringError(
+                  `Unexpected closing tag '${tag}' on offset ${offset}`,
+                )
+              }
             }
 
             result += '</'
@@ -245,12 +263,8 @@ export default function html_substring(
 
   const flushed = flushWord()
 
-  opened.reverse()
-  for (const tag of opened) {
-    result += '</'
-    result += tag
-    result += '>'
-  }
+  closeQueue.reverse()
+  result = [result, ...closeQueue].join('')
 
   if (!flushed) {
     let suffix = opts.suffix

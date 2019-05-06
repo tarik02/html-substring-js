@@ -184,4 +184,24 @@ describe('html_substring', () => {
       expect(result).to.eq('I am okay ')
     })
   })
+
+  describe('void tags', () => {
+    it('should not generate a closing tag for void tags', () => {
+      const result = html_substring('hi<hr>John <input> Doe', 100)
+
+      expect(result).to.eq('hi<hr>John <input> Doe')
+    })
+
+    it('should work fine for li without closing tag', () => {
+      const result = html_substring('<ul><li>Hello<li>Who<li>is<li>John<li>Doe</ul>', 10)
+
+      expect(result).to.eq('<ul><li>Hello<li>Who<li>is</ul>')
+    })
+
+    it('should work fine for li with closing tag', () => {
+      const result = html_substring('<ul><li>Hello</li><li>Who</li><li>is</li><li>John</li><li>Doe</li></ul>', 10)
+
+      expect(result).to.eq('<ul><li>Hello</li><li>Who</li><li>is</li></ul>')
+    })
+  })
 })
