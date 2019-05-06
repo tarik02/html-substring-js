@@ -2,7 +2,7 @@
   "name": "html-substring",
   "author": "tarik02",
   "license": "MIT",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Module making safe substring of HTML source",
   "main": "lib/main.js",
   "types": "lib/main.d.ts",
