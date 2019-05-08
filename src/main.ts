@@ -30,8 +30,10 @@ const isWhitespace = (input: string) => {
   return ' \t\r\n'.includes(input)
 }
 
-const shouldHaveClosingTag = (tag: string) =>
-  voidHtmlTags.indexOf(tag) === -1 && optionalVoidHtmlTags.indexOf(tag) === -1
+const isVoidTag = (tag: string) => voidHtmlTags.indexOf(tag) !== -1
+const isOptionalVoidTag = (tag: string) => optionalVoidHtmlTags.indexOf(tag) !== -1
+
+const haveToHaveClosingTag = (tag: string) => !(isVoidTag(tag) || isOptionalVoidTag(tag))
 
 /**
  * @param source Source HTML
@@ -103,18 +105,32 @@ export default function html_substring(
   const closeQueue: string[] = [] // list of tags to be closed
   let result: string = ''
 
-  const openTags = () => {
-    for (const [tag, other] of openedQueue) {
+  const openTags = (onlyVoid: boolean = false) => {
+    while (true) {
+      const value = openedQueue.shift()
+      if (!value) {
+        break
+      }
+
+      const [tag, other] = value
+
+      const isVoid = isVoidTag(tag)
+      const isOptionalVoid = isOptionalVoidTag(tag)
+      const isXHTMLClosed = other[other.length - 1] === '/'
+      if (onlyVoid && !(isVoid || isXHTMLClosed)) {
+        openedQueue.unshift([tag, other])
+        break
+      }
+
       result += '<'
       result += tag
       result += other
       result += '>'
 
-      if (shouldHaveClosingTag(tag)) {
+      if (!(isVoid || isOptionalVoid || isXHTMLClosed)) {
         closeQueue.push(`</${tag}>`)
       }
     }
-    openedQueue.length = 0
   }
 
   const cw: string[] = [] // current word
@@ -195,7 +211,7 @@ export default function html_substring(
             let success = false
 
             // if the tag doesn't need to be closed, then just print it
-            if (shouldHaveClosingTag(tag)) {
+            if (haveToHaveClosingTag(tag)) {
               while (closeQueue.length !== 0) {
                 success = closeQueue.pop() === (`</${tag}>`)
                 if (success) {
@@ -261,6 +277,7 @@ export default function html_substring(
     }
   }
 
+  openTags(true)
   const flushed = flushWord()
 
   closeQueue.reverse()

@@ -204,4 +204,18 @@ describe('html_substring', () => {
       expect(result).to.eq('<ul><li>Hello</li><li>Who</li><li>is</li></ul>')
     })
   })
+
+  describe('xhtml tags', () => {
+    it('should not close non-void xhtml tags', () => {
+      const result = html_substring('abc <div class="mydiv" />', 15)
+
+      expect(result).to.eq('abc <div class="mydiv" />')
+    })
+
+    it('should not close void xhtml tags', () => {
+      const result = html_substring('Name: <input type="text" value="Hello" />', 15)
+
+      expect(result).to.eq('Name: <input type="text" value="Hello" />')
+    })
+  })
 })
