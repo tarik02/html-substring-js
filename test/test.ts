@@ -72,10 +72,19 @@ describe('html_substring', () => {
       expect(result).to.eq('&lt;&lt;&lt;&lt;&lt;')
     })
 
-    it('should throw error when entity is not closed', () => {
-      expect(() => {
-        html_substring('15 &lt 30', 10)
-      }).to.throw('Expected matching \';\' to \'&\' at offset 3')
+    it('should work with symbol entities', () => {
+      const result = html_substring('&#913;&#913;&#913;&#913;&#913;&#913;', 2)
+      expect(result).to.eq('&#913;&#913;')
+    })
+
+    it('should consider non-closed entity as normal text', () => {
+      const result = html_substring('&trade ', 3)
+      expect(result).to.eq('&tr')
+    })
+
+    it('should consider non-closed entity as normal text #2', () => {
+      const result = html_substring('& hello world ', 10)
+      expect(result).to.eq('& hello wo')
     })
   })
 

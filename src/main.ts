@@ -242,24 +242,22 @@ export default function html_substring(
       case '&':
         const offset = i - 1
         result += '&'
+        ++current
 
-        let success = false
         while (i < chars.length) {
           const c = chars[i++]
-          result += c
+          // result += c
+
+          if (isWhitespace(c)) {
+            i = offset + 1
+            break
+          }
+
           if (c === ';') {
-            success = true
+            result += chars.slice(offset + 1, i).join('')
             break
           }
         }
-
-        if (!success) {
-          throw new HtmlSubstringError(
-            `Expected matching ';' to '&' at offset ${offset}`,
-          )
-        }
-
-        current++
         break
 
       default:
