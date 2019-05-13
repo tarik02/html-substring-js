@@ -226,5 +226,17 @@ describe('html_substring', () => {
 
       expect(result).to.eq('Name: <input type="text" value="Hello" />')
     })
+
+    it('should work normal with text after tag', () => {
+      const result = html_substring('test <br /> test lorem ipsum', 10)
+
+      expect(result).to.eq('test <br /> test')
+    })
+
+    it('should work normal with small tags (without spaces between tag name and slash)', () => {
+      const result = html_substring('test <br/> test lorem ipsum', 10)
+
+      expect(result).to.eq('test <br/> test')
+    })
   })
 })

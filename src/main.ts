@@ -23,11 +23,15 @@ const DEFAULT_OPTIONS: Options = {
 }
 
 const isLetter = (input: string) => {
-  return input.toLowerCase() !== input.toUpperCase()
+  return input && input.toLowerCase() !== input.toUpperCase()
+}
+
+const isNumber = (input: string) => {
+  return '0123456789'.indexOf(input) !== -1
 }
 
 const isWhitespace = (input: string) => {
-  return ' \t\r\n'.includes(input)
+  return ' \t\r\n'.indexOf(input) !== -1
 }
 
 const isVoidTag = (tag: string) => voidHtmlTags.indexOf(tag) !== -1
@@ -71,7 +75,7 @@ export default function html_substring(
 
     while (true) {
       c = chars[i++]
-      if (c === ' ' || c === '>') {
+      if (!isLetter(c) && !isNumber(c)) {
         break
       }
 
@@ -79,7 +83,8 @@ export default function html_substring(
     }
 
     if (c !== '>') {
-      other += ' '
+      other += c
+
       while (true) {
         c = chars[i++]
         if (c === '>') {
