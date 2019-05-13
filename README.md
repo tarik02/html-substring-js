@@ -15,14 +15,14 @@ interface Options {
 /**
  * @param source Source HTML
  * @param length Visible characters (everything but HTML tags) limit
- * @param options Options object
+ * @param options Options object or suffix
  *
  * @returns stripped source by length characters
  */
 function html_substring(
   source: string,
   length: number,
-  options?: Partial<Options>,
+  options?: string | Partial<Options>,
 ): string
 ```
 

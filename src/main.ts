@@ -45,11 +45,19 @@ const haveToHaveClosingTag = (tag: string) => !(isVoidTag(tag) || isOptionalVoid
 export default function html_substring(
   source: string,
   length: number,
-  options: Partial<Options> = DEFAULT_OPTIONS,
+  options: string | Partial<Options> = DEFAULT_OPTIONS,
 ): string {
-  const opts: Options = {
-    ...DEFAULT_OPTIONS,
-    ...options,
+  let opts: Options
+  if (typeof options === 'string') {
+    opts = {
+      ...DEFAULT_OPTIONS,
+      suffix: options,
+    }
+  } else {
+    opts = {
+      ...DEFAULT_OPTIONS,
+      ...options,
+    }
   }
 
   let current = 0 // current text length
