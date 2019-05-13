@@ -46,7 +46,7 @@ const haveToHaveClosingTag = (tag: string) => !(isVoidTag(tag) || isOptionalVoid
  *
  * @returns stripped source by length characters
  */
-export default function html_substring(
+export function html_substring(
   source: string,
   length: number,
   options: string | Partial<Options> = DEFAULT_OPTIONS,
@@ -307,3 +307,5 @@ export default function html_substring(
 
   return result
 }
+
+export default html_substring
