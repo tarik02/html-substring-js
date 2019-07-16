@@ -1,11 +1,29 @@
 language: node_js
 node_js:
-  - stable
+- '8'
+- '10'
+- '12'
 
 install:
-  - yarn install
+- yarn install
 
 script:
-  - yarn lint
-  - yarn build
-  - yarn test
+- yarn lint
+- yarn build
+- yarn test
+
+notifications:
+  email: false
+
+deploy:
+  skip_cleanup: true
+  provider: npm
+  email: Taras.Fomin@gmail.com
+  api_key:
+    secure: Evgxl4FsZ0958IuyZcJxRqRW/pZVHGa2yS0fffQf/1JL6kRBykIasj/dAPxR7sGjfiVHYny1M0D/E+PcIzsmv/68Kv2W3KedqgWx6VRrJtoswmxHCHFHUZJOYjIcBUgEoBmzQfuJ8DhC6xVD2u8cel83u0+WvAD8WJVdqVgwHdL4auSB/ZhbDsj0XvYdMG6D9HekX79FcRCrtvC0kITZRPoVZwY5p456svaoKRhc1LYelqtv+cNS/Dgs1lTGNF6hlzHMuhUgt3gRsp9BC97FX6ps9KKIdMBKUcfRrQo7xuDJRpubalXhvU6iPn2gRnE8CCHFbiHPfed/X23FenyuV1Ug8RufQu1REWb5MKUql1VqbKDc9vsyAzC4ieaqt44W5J6RGU+/MWwMdt3V14sv51Q76IBtRmqd9HkrFZ+u9ac1Z54foxNxQgf5GOibKS09Oeqir6I8obO3ZxsjKx7Biremg2p4v6rIjE/BU4H+BcrJMj4T6MljlFsLlcjrJjUZ6+cU0834BCgoQARivEEWFViAPf8GQIRE04SYSuF71mzzmMbfxNVp1n2T6kc3987bmIkvcnRmCaBfPUDwfprscOqBcWjcEVn4FVDvi/n/J9SwcfcKHKKsnRXF9SiorMivRyCzgk9mG6mkezCLoVZy5089xt34bpmMMTslvVfvRLU=
+  on:
+    tags: true
+    repo: Tarik02/html-substring-js
+    master: branch
+    condition: $TRAVIS_NODE_VERSION = 12
+
