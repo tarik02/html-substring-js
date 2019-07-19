@@ -10,7 +10,7 @@
     "build": "tsc",
     "lint": "tslint -c ./tslint.json 'src/**/*.ts' 'test/**/*.ts'",
     "test": "mocha -r ts-node/register test/*.ts",
-    "prepublish": "yarn run build && yarn run lint && yarn run test"
+    "prepublishOnly": "yarn build && yarn lint && yarn test"
   },
   "homepage": "https://github.com/Tarik02/html-substring-js#readme",
   "bugs": {
