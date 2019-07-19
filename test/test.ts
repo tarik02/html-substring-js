@@ -239,4 +239,54 @@ describe('html_substring', () => {
       expect(result).to.eq('test <br/> test')
     })
   })
+
+  describe('unclosed tag name', () => {
+    it('should work with \'<\' as input', () => {
+      const result = html_substring('<', 50)
+
+      expect(result).to.eq('<')
+    })
+
+    it('should work with \'<div\' as input', () => {
+      const result = html_substring('<div', 50)
+
+      expect(result).to.eq('<div')
+    })
+
+    it('should work with \'<div \' as input', () => {
+      const result = html_substring('<div ', 50)
+
+      expect(result).to.eq('<div ')
+    })
+
+    it('should work with \'<div abc\' as input', () => {
+      const result = html_substring('<div abc', 50)
+
+      expect(result).to.eq('<div abc')
+    })
+
+    it('should work with \'test <div abc\' as input', () => {
+      const result = html_substring('test <div abc', 50)
+
+      expect(result).to.eq('test <div abc')
+    })
+
+    it('should work with \'test hello <div <h1\' as input', () => {
+      const result = html_substring('test hello <div <h1', 50)
+
+      expect(result).to.eq('test hello <div <h1')
+    })
+
+    it('should work with \'<div<h1> word\' as input', () => {
+      const result = html_substring('<div<h1> word', 50)
+
+      expect(result).to.eq('<div<h1> word</div>')
+    })
+
+    it('should work with this strange test', () => {
+      const result = html_substring('>>>\_(*L*)_/<<>>>\_(*L*)_/<<', 50)
+
+      expect(result).to.eq('>>>\_(*L*)_/<<>>>\_(*L*)_/<<')
+    })
+  })
 })

@@ -68,12 +68,13 @@ export function html_substring(
   let i = 0 // current source position
   const chars = Array.from(source) // Split the string to array of characters
 
-  const openTag = (): [string, string] => {
+  const openTag = (): [string, string] | null => {
     let tag = ''
     let other = ''
-    let c: string
+    let c: string = ''
+    const tagStart = i
 
-    while (true) {
+    while (i < chars.length) {
       c = chars[i++]
       if (!isLetter(c) && !isNumber(c)) {
         break
@@ -82,10 +83,10 @@ export function html_substring(
       tag += c
     }
 
-    if (c !== '>') {
+    if (tag.length > 0 && i < chars.length && c !== '>') {
       other += c
 
-      while (true) {
+      while (i < chars.length) {
         c = chars[i++]
         if (c === '>') {
           break
@@ -95,13 +96,19 @@ export function html_substring(
       }
     }
 
+    if (tag.length === 0 || c !== '>') {
+      cw.push('<')
+      i = tagStart
+      return null
+    }
+
     return [tag, other]
   }
 
   const closeTag = () => {
     let tag = ''
     let c
-    while (true) {
+    while (i < chars.length) {
       c = chars[i++]
       if (c === '>') {
         break
@@ -205,6 +212,7 @@ export function html_substring(
                 chars[i + 1] !== '-' &&
                 chars[i + 2] !== '>'
               ) {
+                ++current
                 result += chars[i++]
               }
               i += 2
@@ -246,7 +254,10 @@ export function html_substring(
           }
           default: {
             // open tag
-            openedQueue.push(openTag())
+            const tag = openTag()
+            if (tag !== null) {
+              openedQueue.push(tag)
+            }
             break
           }
         }
