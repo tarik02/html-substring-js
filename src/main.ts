@@ -264,6 +264,8 @@ export function html_substring(
         break
 
       case '&':
+        flushWord()
+
         const offset = i - 1
         result += '&'
         ++current

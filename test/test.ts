@@ -86,6 +86,16 @@ describe('html_substring', () => {
       const result = html_substring('& hello world ', 10)
       expect(result).to.eq('& hello wo')
     })
+
+    it('should work with entities among normal text', () => {
+      const result = html_substring('K&amp;M', 1000)
+      expect(result).to.eq('K&amp;M')
+    })
+
+    it('should work with entities among normal text #2', () => {
+      const result = html_substring('Hello&amp;World', 1000)
+      expect(result).to.eq('Hello&amp;World')
+    })
   })
 
   describe('word breaking', () => {
